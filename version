@@ -1,0 +1,51 @@
+#!/bin/bash
+function join() {
+    local IFS="$1"
+    shift
+    echo "$*"
+}
+
+gradle="project.gradle"
+json="src/main/resources/fabric.mod.json"
+
+substitution="\${version}"
+
+version="$(grep "version" ${gradle} | grep -Eom 1 "[0-9]+.[0-9]+.[0-9]+")"
+echo "The current version is $version."
+
+IFS="." read -ra version <<< "$version"
+echo "Enter a version index."
+
+while [[ -z "$index" ]]; do
+    read -r index
+
+    if grep -Eq "quit|exit" <<< "$(tr "[:upper:]" "[:lower:]" <<<"$index")"; then
+        exit
+    fi
+
+    index=$(grep -Eo "[0-2]" <<< "$index" | head -1)
+done
+
+echo "Enter the new number for the version specified by this index."
+
+while [[ -z "$new" ]]; do
+    read -r new
+    new=$(grep -Eo "[0-9]+" <<< "$new" | head -1)
+done
+
+if [[ "$index" -le 1 ]]; then
+    version[2]="0"
+
+    if [[ "$index" == 0 ]]; then
+        version[1]="0"
+    fi
+fi
+
+version[$index]="$new"
+new=$(join "." "${version[@]}")
+
+sed -i "s/version.*/version = \"$new\"/" "$gradle"
+sed -i "s/version\":.*/version\": \"${new}\",/" ${json}
+echo "The new version is $new."
+
+"$PWD/$(basename -- "$0")"

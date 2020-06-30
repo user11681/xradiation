@@ -1,0 +1,27 @@
+{
+    "schemaVersion": 1,
+    "id": "xray",
+    "version": "0.0.0",
+    "name": "X-ray",
+    "authors": [
+        "user11681"
+    ],
+    "contact": {
+        "sources": "https://github.com/user11681/xray"
+    },
+    "license": "GNU GPL v3.0",
+    "icon": "assets/xray/icon.png",
+    "environment": "client",
+    "entrypoints": {
+        "client": [
+            "user11681.xray.Main"
+        ]
+    },
+    "mixins": [
+        "xray.mixins.json"
+    ],
+    "depends": {
+        "fabricloader": "*",
+        "fabric-key-binding-api-v1": "*"
+    }
+}

@@ -1,0 +1,14 @@
+{
+    "required": true,
+    "compatibilityLevel": "JAVA_8",
+    "package": "user11681.xray.mixin.mixin",
+    "mixins": [
+        "BlockRenderManagerMixin"
+    ],
+    "client": [
+        "BlockModelRendererMixin"
+    ],
+    "injectors": {
+        "defaultRequire": 1
+    }
+}
