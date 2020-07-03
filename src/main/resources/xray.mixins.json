@@ -3,10 +3,20 @@
     "compatibilityLevel": "JAVA_8",
     "package": "user11681.xray.mixin.mixin",
     "mixins": [
-        "BlockRenderManagerMixin"
     ],
     "client": [
-        "BlockModelRendererMixin"
+        "item.BlockItemMixin",
+        "item.BucketItemMixin",
+        "item.PortalBlockMixin",
+        "item.WallStandingBlockItemMixin",
+        "registry.RegistryMixin",
+        "render.BlockEntityRenderDispatcherMixin",
+        "render.BlockRenderManagerMixin",
+        "render.WorldRendererMixin",
+        "render.indigo.AbstractQuadRendererMixin",
+        "render.indigo.RenderMaterialImplMixin",
+        "render.indigo.TerrainBlockRenderInfoMixin",
+        "render.indigo.TerrainRenderContextMixin"
     ],
     "injectors": {
         "defaultRequire": 1

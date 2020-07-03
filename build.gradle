@@ -43,6 +43,7 @@ dependencies {
 //    modImplementation "com.jamieswhiteshirt:developer-mode:1.0.15"
 }
 
+
 configurations.all {
     resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
 }
@@ -96,6 +97,6 @@ publishing {
     // select the repositories you want to publish to
     repositories {
         // uncomment to publish to the local maven
-         mavenLocal()
+        mavenLocal()
     }
 }

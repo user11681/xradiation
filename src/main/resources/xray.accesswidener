@@ -1,0 +1,4 @@
+accessWidener   v1  named
+extendable  method  net/minecraft/client/gui/screen/ingame/HandledScreen    drawItem    (Lnet/minecraft/item/ItemStack;IILjava/lang/String;)V
+extendable  method  net/minecraft/client/gui/screen/ingame/HandledScreen    drawSlot    (Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/screen/slot/Slot;)V
+accessible  method  net/minecraft/client/render/WorldRenderer   drawBlockOutline    (Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;Lnet/minecraft/entity/Entity;DDDLnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;)V

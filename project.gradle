@@ -1,5 +1,22 @@
 version = "0.0.0"
 
+minecraft {
+    accessWidener "src/main/resources/xray.accesswidener"
+}
+
 dependencies {
-    modImplementation "${project.apiKeyBindings}"
+    modApi "${project.apiBase}"
+    include "${project.apiBase}"
+
+    modApi "${project.apiKeyBindings}"
+    include "${project.apiKeyBindings}"
+
+    modApi "${project.apiRendererIndigo}"
+    include "${project.apiRendererIndigo}"
+
+    modApi "${project.apiRendererApi}"
+    include "${project.apiRendererApi}"
+
+    modApi "${project.apiResourceLoader}"
+    include "${project.apiResourceLoader}"
 }

@@ -20,6 +20,7 @@
     "mixins": [
         "xray.mixins.json"
     ],
+    "accessWidener": "xray.accesswidener",
     "depends": {
         "fabricloader": "*",
         "fabric-key-binding-api-v1": "*"
