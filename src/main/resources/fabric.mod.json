@@ -1,26 +1,26 @@
 {
     "schemaVersion": 1,
-    "id": "xray",
+    "id": "xradiation",
     "version": "0.0.0",
-    "name": "X-ray",
+    "name": "X-radiation",
     "authors": [
         "user11681"
     ],
     "contact": {
-        "sources": "https://github.com/user11681/xray"
+        "sources": "https://github.com/user11681/xradiation"
     },
     "license": "GNU GPL v3.0",
-    "icon": "assets/xray/icon.png",
+    "icon": "assets/xradiation/icon.png",
     "environment": "client",
     "entrypoints": {
         "client": [
-            "user11681.xray.Main"
+            "user11681.xradiation.Main"
         ]
     },
     "mixins": [
-        "xray.mixins.json"
+        "xradiation.mixins.json"
     ],
-    "accessWidener": "xray.accesswidener",
+    "accessWidener": "xradiation.accesswidener",
     "depends": {
         "fabricloader": "*",
         "fabric-key-binding-api-v1": "*"

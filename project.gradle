@@ -1,7 +1,7 @@
 version = "0.0.0"
 
 minecraft {
-    accessWidener "src/main/resources/xray.accesswidener"
+    accessWidener "src/main/resources/xradiation.accesswidener"
 }
 
 dependencies {
