@@ -16,7 +16,7 @@ import user11681.xradiation.Configuration;
 
 @Environment(EnvType.CLIENT)
 @Mixin(BlockEntityRenderDispatcher.class)
-public abstract class BlockEntityRenderDispatcherMixin {
+abstract class BlockEntityRenderDispatcherMixin {
     private static final String render = "render(Lnet/minecraft/client/render/block/entity/BlockEntityRenderer;Lnet/minecraft/block/entity/BlockEntity;FLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;)V";
 
     @Inject(method = render, at = @At("HEAD"), cancellable = true)

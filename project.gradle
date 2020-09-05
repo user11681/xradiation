@@ -1,22 +1,14 @@
-version = "0.0.0"
+version = "0.0.1"
 
 minecraft {
     accessWidener "src/main/resources/xradiation.accesswidener"
 }
 
 dependencies {
-    modApi "${project.apiBase}"
-    include "${project.apiBase}"
-
-    modApi "${project.apiKeyBindings}"
-    include "${project.apiKeyBindings}"
-
-    modApi "${project.apiRendererIndigo}"
-    include "${project.apiRendererIndigo}"
-
-    modApi "${project.apiRendererApi}"
-    include "${project.apiRendererApi}"
-
-    modApi "${project.apiResourceLoader}"
-    include "${project.apiResourceLoader}"
+    /*modApi*/ include("${project.apiBase}")
+    /*modApi*/ include("${project.apiKeyBindings}")
+    /*modApi*/ include("${project.apiRendererApi}")
+    /*modApi*/ include("${project.apiRendererIndigo}")
+    /*modApi*/ include("${project.apiResourceLoader}")
+    modApi "${project.astromine}"
 }

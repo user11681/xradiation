@@ -1,8 +1,7 @@
 package user11681.xradiation.mixin.mixin.item;
 
-import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
+import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 import java.util.Map;
-import java.util.Set;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.WallStandingBlockItem;
@@ -15,28 +14,25 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import user11681.xradiation.registry.BlockItemData;
 
 @Mixin(WallStandingBlockItem.class)
-public abstract class WallStandingBlockItemMixin {
+abstract class WallStandingBlockItemMixin {
     @Shadow
     @Final
     protected Block wallBlock;
 
     @Inject(method = "appendBlocks", at = @At("HEAD"))
     private void mapItemToBlocks(final Map<Block, Item> map, final Item item, final CallbackInfo info) {
-        final Set<Block> blocks = new ObjectOpenHashSet<>();
-        final Block block = this.wallBlock;
+        ReferenceOpenHashSet<Block> mappedBlocks = BlockItemData.ITEM_BLOCKS.get(item);
 
-        blocks.add(block);
-
-        for (final Map.Entry<Block, Item> entry : map.entrySet()) {
-            final Item value = entry.getValue();
-
-            if (value == item) {
-                blocks.add(entry.getKey());
-
-                BlockItemData.ITEM_BLOCKS.get(value).add(block);
-            }
+        if (mappedBlocks == null) {
+            BlockItemData.ITEM_BLOCKS.put(item, mappedBlocks = new ReferenceOpenHashSet<>());
         }
 
-        BlockItemData.ITEM_BLOCKS.computeIfAbsent(item, (final Item key) -> new ObjectOpenHashSet<>()).addAll(blocks);
+        mappedBlocks.add(this.wallBlock);
+
+        for (final Map.Entry<Block, Item> entry : map.entrySet()) {
+            if (entry.getValue() == item) {
+                mappedBlocks.add(entry.getKey());
+            }
+        }
     }
 }

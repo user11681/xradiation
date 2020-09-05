@@ -52,44 +52,48 @@ import user11681.xradiation.registry.FluidData;
 public class Configuration {
     public static final Configuration INSTANCE = new Configuration(String.format("%s.json", Main.MOD_ID));
 
-    private static final Gson GSON = new GsonBuilder()
-            .disableHtmlEscaping()
-            .setPrettyPrinting()
-            .registerTypeAdapter(Configuration.class, new Serializer())
-            .create();
-    private static final JsonParser PARSER = new JsonParser();
     private static final MinecraftClient client = MinecraftClient.getInstance();
-    public final Set<Block> defaultBlocks;
+    private static final JsonParser PARSER = new JsonParser();
+    private static final Gson GSON = new GsonBuilder()
+        .disableHtmlEscaping()
+        .setPrettyPrinting()
+        .registerTypeAdapter(Configuration.class, new Serializer())
+        .create();
+
     public final Set<Block> allowedBlocks;
-    public final Set<Block> addBlocks;
-    public final Set<Block> removeBlocks;
-    public final Set<Fluid> defaultFluids;
     public final Set<Fluid> allowedFluids;
+    public final Set<Block> addBlocks;
     public final Set<Fluid> addFluids;
+    public final Set<Block> removeBlocks;
     public final Set<Fluid> removeFluids;
-    private final File file;
+    public final Set<Block> defaultBlocks;
+    public final Set<Fluid> defaultFluids;
+
     public boolean enabled;
+
+    private final File file;
+
     private boolean previousChunkCullingEnabled;
 
-    public Configuration(final String filename) {
-        this.file = new File(FabricLoader.getInstance().getConfigDirectory(), filename);
+    protected Configuration(final String filename) {
+        this.file = new File(FabricLoader.getInstance().getConfigDir().toString(), filename);
         this.allowedBlocks = new ObjectLinkedOpenHashSet<>();
         this.allowedFluids = new ObjectLinkedOpenHashSet<>();
         this.addBlocks = new ObjectLinkedOpenHashSet<>();
-        this.removeBlocks = new ObjectLinkedOpenHashSet<>();
         this.addFluids = new ObjectLinkedOpenHashSet<>();
+        this.removeBlocks = new ObjectLinkedOpenHashSet<>();
         this.removeFluids = new ObjectLinkedOpenHashSet<>();
         this.defaultBlocks = new ObjectLinkedOpenHashSet<>(Arrays.asList(
-                Blocks.COAL_ORE,
-                Blocks.IRON_ORE,
-                Blocks.GOLD_ORE,
-                Blocks.REDSTONE_ORE,
-                Blocks.LAPIS_ORE,
-                Blocks.DIAMOND_ORE,
-                Blocks.EMERALD_ORE,
-                Blocks.NETHER_QUARTZ_ORE,
-                Blocks.NETHER_GOLD_ORE,
-                Blocks.ANCIENT_DEBRIS
+            Blocks.COAL_ORE,
+            Blocks.IRON_ORE,
+            Blocks.GOLD_ORE,
+            Blocks.REDSTONE_ORE,
+            Blocks.LAPIS_ORE,
+            Blocks.DIAMOND_ORE,
+            Blocks.EMERALD_ORE,
+            Blocks.NETHER_QUARTZ_ORE,
+            Blocks.NETHER_GOLD_ORE,
+            Blocks.ANCIENT_DEBRIS
         ));
         this.defaultFluids = new ObjectLinkedOpenHashSet<>(5);
         this.defaultFluids.addAll(FluidData.FLUIDS.get(Fluids.WATER));
@@ -110,7 +114,7 @@ public class Configuration {
         return item instanceof BlockItem;
     }
 
-    public final void read() {
+    public void read() {
         if (this.tryCreateFile()) {
             this.reset();
             this.apply();
@@ -161,24 +165,26 @@ public class Configuration {
             if (onFail != null) {
                 onFail.run();
             }
-        } else for (final JsonElement identifier : array) {
-            try {
-                final T block = fromString.apply(new Identifier(identifier.getAsString()));
+        } else {
+            for (final JsonElement identifier : array) {
+                try {
+                    final T block = fromString.apply(new Identifier(identifier.getAsString()));
 
-                if (addPredicate.test(block)) {
-                    output.add(block);
+                    if (addPredicate.test(block)) {
+                        output.add(block);
+                    }
+                } catch (final UnsupportedOperationException exception) {
+                    Main.LOGGER.warn("Skipping {} because it is not a valid {} identifier", identifier, type);
                 }
-            } catch (final UnsupportedOperationException exception) {
-                Main.LOGGER.warn("Skipping {} because it is not a valid {} identifier", identifier, type);
             }
         }
     }
 
-    public final void write() {
+    public void write() {
         this.write(false);
     }
 
-    public final void write(final boolean verbose) {
+    public void write(final boolean verbose) {
         final String configuration = GSON.toJson(this);
 
         if (this.file.exists() || this.tryCreateFile()) {
@@ -202,7 +208,6 @@ public class Configuration {
         }
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     private String readFile() {
         try {
             final InputStream input = new FileInputStream(file);
@@ -239,91 +244,91 @@ public class Configuration {
         }
     }
 
-    public final boolean shouldFilter(final BlockEntity entity) {
+    public boolean shouldFilter(final BlockEntity entity) {
         return entity.hasWorld() && this.shouldFilter(entity.getCachedState().getBlock());
     }
 
-    public final boolean shouldFilter(final BlockState state) {
+    public boolean shouldFilter(final BlockState state) {
         return this.shouldFilter(state.getBlock());
     }
 
-    public final boolean shouldFilter(final Block block) {
+    public boolean shouldFilter(final Block block) {
         return this.enabled && !this.isAllowed(block);
     }
 
-    public final boolean shouldFilter(final FluidState state) {
+    public boolean shouldFilter(final FluidState state) {
         return this.shouldFilter(state.getFluid());
     }
 
-    public final boolean shouldFilter(final Fluid fluid) {
+    public boolean shouldFilter(final Fluid fluid) {
         return this.enabled && !this.isAllowed(fluid);
     }
 
-    public final boolean isAllowed(final ItemStack itemStack) {
+    public boolean isAllowed(final ItemStack itemStack) {
         return this.isAllowed(itemStack.getItem());
     }
 
-    public final boolean isAllowed(final Item item) {
+    public boolean isAllowed(final Item item) {
         return item instanceof BlockItem && this.isAllowed(Block.getBlockFromItem(item)) || item instanceof BucketItem && this.isAllowed(((BucketFluidAccessor) item).getFluid());
     }
 
-    public final boolean isAllowed(final BlockEntity entity) {
+    public boolean isAllowed(final BlockEntity entity) {
         return this.isAllowed(entity.getCachedState().getBlock());
     }
 
-    public final boolean isAllowed(final BlockState state) {
+    public boolean isAllowed(final BlockState state) {
         return this.isAllowed(state.getBlock());
     }
 
-    public final boolean isAllowed(final Block block) {
+    public boolean isAllowed(final Block block) {
         return this.allowedBlocks.contains(block);
     }
 
-    public final boolean isAllowed(final Fluid fluid) {
+    public boolean isAllowed(final Fluid fluid) {
         return this.allowedFluids.contains(fluid);
     }
 
-    public final boolean shouldAdd(final ItemStack itemStack) {
+    public boolean shouldAdd(final ItemStack itemStack) {
         return this.shouldAdd(itemStack.getItem());
     }
 
-    public final boolean shouldAdd(final Item item) {
+    public boolean shouldAdd(final Item item) {
         return item instanceof BlockItem && this.shouldAdd(Block.getBlockFromItem(item)) || item instanceof BucketItem && this.shouldAdd(((BucketFluidAccessor) item).getFluid());
     }
 
-    public final boolean shouldAdd(final Block block) {
+    public boolean shouldAdd(final Block block) {
         return this.addBlocks.contains(block);
     }
 
-    public final boolean shouldAdd(final Fluid fluid) {
+    public boolean shouldAdd(final Fluid fluid) {
         return this.addFluids.contains(fluid);
     }
 
-    public final boolean shouldRemove(final ItemStack itemStack) {
+    public boolean shouldRemove(final ItemStack itemStack) {
         return this.shouldRemove(itemStack.getItem());
     }
 
-    public final boolean shouldRemove(final Item item) {
+    public boolean shouldRemove(final Item item) {
         return item instanceof BlockItem && this.shouldRemove(Block.getBlockFromItem(item)) || item instanceof BucketItem && this.shouldRemove(((BucketFluidAccessor) item).getFluid());
     }
 
-    public final boolean shouldRemove(final Block block) {
+    public boolean shouldRemove(final Block block) {
         return this.removeBlocks.contains(block);
     }
 
-    public final boolean shouldRemove(final Fluid fluid) {
+    public boolean shouldRemove(final Fluid fluid) {
         return this.removeFluids.contains(fluid);
     }
 
-    public final void toggleItems(final ItemStack... stacks) {
+    public void toggleItems(final ItemStack... stacks) {
         this.toggleItems(this.toItems(stacks));
     }
 
-    public final void toggleItems(final List<Item> items) {
+    public void toggleItems(final List<Item> items) {
         this.toggleItems(items.toArray(new Item[0]));
     }
 
-    public final void toggleItems(final Item... items) {
+    public void toggleItems(final Item... items) {
         for (final Item item : items) {
             if (item instanceof BlockItem) {
                 this.toggleBlocks(BlockItemData.ITEM_BLOCKS.get(item));
@@ -333,11 +338,11 @@ public class Configuration {
         }
     }
 
-    public final void toggleBlocks(final Collection<Block> blocks) {
+    public void toggleBlocks(final Collection<Block> blocks) {
         this.toggleBlocks(blocks.toArray(new Block[0]));
     }
 
-    public final void toggleBlocks(final Block... blocks) {
+    public void toggleBlocks(final Block... blocks) {
         for (final Block block : blocks) {
             if (this.shouldAdd(block)) {
                 this.addBlocks.remove(block);
@@ -351,11 +356,11 @@ public class Configuration {
         }
     }
 
-    public final void toggleFluids(final Collection<Fluid> fluids) {
+    public void toggleFluids(final Collection<Fluid> fluids) {
         this.toggleFluids(fluids.toArray(new Fluid[0]));
     }
 
-    public final void toggleFluids(final Fluid... fluids) {
+    public void toggleFluids(final Fluid... fluids) {
         for (final Fluid fluid : fluids) {
             if (this.shouldAdd(fluid)) {
                 this.addFluids.remove(fluid);
@@ -369,21 +374,21 @@ public class Configuration {
         }
     }
 
-    public final void addBlocks(final Block... blocks) {
+    public void addBlocks(final Block... blocks) {
         this.addBlocks.addAll(Arrays.asList(blocks));
     }
 
-    public final void addFluids(final Fluid... fluids) {
+    public void addFluids(final Fluid... fluids) {
         for (final Fluid fluid : fluids) {
             this.addFluids.addAll(FluidData.FLUIDS.get(fluid));
         }
     }
 
-    public final void removeBlocks(final Block... blocks) {
+    public void removeBlocks(final Block... blocks) {
         this.removeBlocks.addAll(Arrays.asList(blocks));
     }
 
-    public final void removeFluids(final Fluid... fluids) {
+    public void removeFluids(final Fluid... fluids) {
         for (final Fluid fluid : fluids) {
             this.removeFluids.addAll(FluidData.FLUIDS.get(fluid));
         }
@@ -411,15 +416,15 @@ public class Configuration {
         return blocks;
     }
 
-    public final boolean isDefault() {
+    public boolean isDefault() {
         return this.allowedBlocks.equals(this.defaultBlocks) && this.allowedFluids.equals(this.defaultFluids);
     }
 
-    public final boolean canApply() {
+    public boolean canApply() {
         return !this.addBlocks.isEmpty() || !this.addFluids.isEmpty() || !this.removeBlocks.isEmpty() || !this.removeFluids.isEmpty();
     }
 
-    public final void apply() {
+    public void apply() {
         this.allowedBlocks.removeAll(this.removeBlocks);
         this.allowedFluids.removeAll(this.removeFluids);
         this.allowedBlocks.addAll(this.addBlocks);
@@ -438,37 +443,37 @@ public class Configuration {
         return this.addBlocks.isEmpty() && this.removeBlocks.isEmpty() && this.addFluids.isEmpty() && this.removeFluids.isEmpty();
     }
 
-    public final void reload() {
+    public void reload() {
         client.worldRenderer.reload();
     }
 
-    public final void discard() {
+    public void discard() {
         this.addBlocks.clear();
         this.removeBlocks.clear();
         this.addFluids.clear();
         this.removeFluids.clear();
     }
 
-    public final void reset() {
+    public void reset() {
         this.resetBlocks();
         this.resetFluids();
     }
 
-    public final void resetBlocks() {
+    public void resetBlocks() {
         this.removeBlocks.clear();
         this.removeBlocks.addAll(this.allowedBlocks.parallelStream().filter((final Block block) -> !this.defaultBlocks.contains(block)).collect(Collectors.toCollection(ObjectLinkedOpenHashSet::new)));
         this.addBlocks.clear();
         this.addBlocks.addAll(this.defaultBlocks.parallelStream().filter((final Block block) -> !this.allowedBlocks.contains(block)).collect(Collectors.toCollection(ObjectLinkedOpenHashSet::new)));
     }
 
-    public final void resetFluids() {
+    public void resetFluids() {
         this.removeFluids.clear();
         this.removeFluids.addAll(this.allowedFluids.parallelStream().filter((final Fluid fluid) -> !this.defaultFluids.contains(fluid)).collect(Collectors.toCollection(ObjectLinkedOpenHashSet::new)));
         this.addFluids.clear();
         this.addFluids.addAll(this.defaultFluids.parallelStream().filter((final Fluid fluid) -> !this.allowedFluids.contains(fluid)).collect(Collectors.toCollection(ObjectLinkedOpenHashSet::new)));
     }
 
-    public final void toggle() {
+    public void toggle() {
         if (this.enabled = !this.enabled) {
             this.previousChunkCullingEnabled = client.chunkCullingEnabled;
 
@@ -476,8 +481,6 @@ public class Configuration {
         } else {
             client.chunkCullingEnabled = this.previousChunkCullingEnabled;
         }
-
-        this.write();
     }
 
     public static class Serializer implements JsonSerializer<Configuration> {

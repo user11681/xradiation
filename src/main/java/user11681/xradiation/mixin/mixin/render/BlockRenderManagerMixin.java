@@ -15,10 +15,10 @@ import user11681.xradiation.Configuration;
 
 @Environment(EnvType.CLIENT)
 @Mixin(BlockRenderManager.class)
-public abstract class BlockRenderManagerMixin {
+abstract class BlockRenderManagerMixin {
     @Inject(method = "renderFluid", at = @At("HEAD"), cancellable = true)
     private void filterFluids(final BlockPos pos, final BlockRenderView blockRenderView, final VertexConsumer vertexConsumer, final FluidState state, final CallbackInfoReturnable<Boolean> info) {
-        if (Configuration.INSTANCE.enabled && !Configuration.INSTANCE.isAllowed(state.getFluid())) {
+        if (Configuration.INSTANCE.shouldFilter(state)) {
             info.setReturnValue(false);
         }
     }

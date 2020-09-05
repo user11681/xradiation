@@ -14,6 +14,7 @@ public class XrayToggleKey extends XrayKeyBinding {
     @Override
     protected void onPress() {
         Configuration.INSTANCE.toggle();
+        Configuration.INSTANCE.write();
         Configuration.INSTANCE.reload();
     }
 }

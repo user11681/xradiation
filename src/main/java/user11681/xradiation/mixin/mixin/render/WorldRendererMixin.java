@@ -23,7 +23,7 @@ import user11681.xradiation.mixin.duck.WorldRendererDuck;
 
 @Environment(EnvType.CLIENT)
 @Mixin(WorldRenderer.class)
-public abstract class WorldRendererMixin implements WorldRendererDuck {
+abstract class WorldRendererMixin implements WorldRendererDuck {
     @Shadow
     @Final
     private BufferBuilderStorage bufferBuilders;

@@ -12,7 +12,7 @@ import user11681.xradiation.Configuration;
 
 @Environment(EnvType.CLIENT)
 @Mixin(TerrainBlockRenderInfo.class)
-public abstract class TerrainBlockRenderInfoMixin {
+abstract class TerrainBlockRenderInfoMixin {
     @Inject(method = "shouldDrawFace", at = @At("HEAD"), cancellable = true, remap = false)
     private void forceDrawFace(final Direction face, final CallbackInfoReturnable<Boolean> info) {
         if (Configuration.INSTANCE.enabled) {

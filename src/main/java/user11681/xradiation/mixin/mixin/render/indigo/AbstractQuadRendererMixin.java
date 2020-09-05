@@ -16,7 +16,7 @@ import user11681.xradiation.Configuration;
 
 @Environment(EnvType.CLIENT)
 @Mixin(AbstractQuadRenderer.class)
-public abstract class AbstractQuadRendererMixin {
+abstract class AbstractQuadRendererMixin {
     @Shadow(remap = false)
     @Final
     static int FULL_BRIGHTNESS;

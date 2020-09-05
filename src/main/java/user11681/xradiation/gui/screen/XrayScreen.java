@@ -14,14 +14,12 @@ import javax.annotation.Nullable;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
-import net.minecraft.class_5414;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.AbstractInventoryScreen;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryListener;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.item.TooltipContext;
-import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.search.SearchManager;
 import net.minecraft.client.search.SearchableContainer;
 import net.minecraft.client.util.InputUtil;
@@ -40,6 +38,7 @@ import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.tag.ItemTags;
 import net.minecraft.tag.Tag;
+import net.minecraft.tag.TagGroup;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
@@ -102,7 +101,7 @@ public class XrayScreen extends AbstractInventoryScreen<XrayScreen.XrayScreenHan
     protected void init() {
         super.init();
 
-        client.keyboard.enableRepeatEvents(true);
+        client.keyboard.setRepeatEvents(true);
 
         this.searchBox = new TextFieldWidget(this.textRenderer, this.x + 82, this.y + 6, 80, 9, new TranslatableText("itemGroup.search"));
         this.searchBox.setMaxLength(50);
@@ -177,7 +176,7 @@ public class XrayScreen extends AbstractInventoryScreen<XrayScreen.XrayScreenHan
             this.player.playerScreenHandler.removeListener(this.listener);
         }
 
-        client.keyboard.enableRepeatEvents(false);
+        client.keyboard.setRepeatEvents(false);
     }
 
     @Override
@@ -288,12 +287,12 @@ public class XrayScreen extends AbstractInventoryScreen<XrayScreen.XrayScreenHan
 
     private void searchForTags(final String string) {
         final int index = string.indexOf(58);
-        final class_5414<Item> tagContainer = ItemTags.getContainer();
+        final TagGroup<Item> tagContainer = ItemTags.getTagGroup();
         final Predicate<Identifier> predicate = index == -1
                 ? (identifier) -> identifier.getPath().contains(string)
                 : (final Identifier identifier) -> identifier.getNamespace().contains(string.substring(0, index).trim()) && identifier.getPath().contains(string.substring(index + 1).trim());
 
-        tagContainer.method_30211().stream().filter(predicate).forEach((final Identifier identifier) -> this.searchResultTags.put(identifier, tagContainer.method_30210(identifier)));
+        tagContainer.getTagIds().stream().filter(predicate).forEach((final Identifier identifier) -> this.searchResultTags.put(identifier, tagContainer.getTag(identifier)));
     }
 
     private void addCustomItems(final String search) {
@@ -443,7 +442,7 @@ public class XrayScreen extends AbstractInventoryScreen<XrayScreen.XrayScreenHan
             });
 
             if (itemGroup != null) {
-                result.add(1, (new TranslatableText(itemGroup.getTranslationKey())).formatted(Formatting.BLUE));
+                result.add(1, new TranslatableText(itemGroup.getTranslationKey().asString()).formatted(Formatting.BLUE));
             }
 
             this.renderTooltip(matrices, result, x, y);
@@ -457,10 +456,10 @@ public class XrayScreen extends AbstractInventoryScreen<XrayScreen.XrayScreenHan
     protected void drawForeground(final MatrixStack matrices, final int mouseX, final int mouseY) {
         final ItemGroup itemGroup = GROUPS.get(selectedTab);
 
-        if (itemGroup.hasTooltip()) {
+        if (itemGroup.shouldRenderName()) {
             RenderSystem.disableBlend();
 
-            this.textRenderer.draw(matrices, I18n.translate(itemGroup.getTranslationKey()), 8, 6, 4210752);
+            this.textRenderer.draw(matrices, itemGroup.getTranslationKey(), 8, 6, 4210752);
         }
     }
 
@@ -550,7 +549,7 @@ public class XrayScreen extends AbstractInventoryScreen<XrayScreen.XrayScreenHan
         final int m = itemGroup.isTopRow() ? -32 : this.backgroundHeight;
 
         if (this.isPointWithinBounds(l + 3, m + 3, 23, 27, x, y)) {
-            this.renderTooltip(matrixStack, new TranslatableText(itemGroup.getTranslationKey()), x, y);
+            this.renderTooltip(matrixStack, itemGroup.getTranslationKey(), x, y);
 
             return true;
         }

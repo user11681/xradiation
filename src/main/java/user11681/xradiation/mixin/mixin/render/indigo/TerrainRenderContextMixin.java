@@ -15,7 +15,7 @@ import user11681.xradiation.Configuration;
 
 @Environment(EnvType.CLIENT)
 @Mixin(TerrainRenderContext.class)
-public abstract class TerrainRenderContextMixin {
+abstract class TerrainRenderContextMixin {
     @Inject(method = "tesselateBlock", at = @At("HEAD"), cancellable = true, remap = false)
     private void filterBlock(final BlockState blockState, final BlockPos blockPos, final BakedModel model, final MatrixStack matrixStack, final CallbackInfoReturnable<Boolean> info) {
         if (Configuration.INSTANCE.shouldFilter(blockState)) {

@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 import user11681.xradiation.mixin.duck.BucketFluidAccessor;
 
 @Mixin(BucketItem.class)
-public abstract class BucketItemMixin implements BucketFluidAccessor {
+abstract class BucketItemMixin implements BucketFluidAccessor {
     @Override
     @Accessor
     public abstract Fluid getFluid();

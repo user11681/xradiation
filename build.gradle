@@ -1,9 +1,9 @@
 plugins {
-    id 'fabric-loom' version '0.4-SNAPSHOT'
-    id 'maven-publish'
+    id "fabric-loom" version "0.4-SNAPSHOT"
+    id "maven-publish"
+    id "maven"
 }
 
-apply plugin: "maven"
 apply from: "project.gradle"
 
 sourceCompatibility = JavaVersion.VERSION_1_8
@@ -19,26 +19,51 @@ repositories {
     }
 
     maven {
+        url "https://raw.githubusercontent.com/Devan-Kerman/Devan-Repo/master"
+    }
+
+    maven {
+        url "https://dl.bintray.com/ladysnake/libs"
+    }
+
+    maven {
         url "https://maven.jamieswhiteshirt.com/libs-release"
+    }
+
+    maven {
+        url "https://maven.blamejared.com"
+    }
+
+    maven {
+        url "https://mod-buildcraft.com/maven"
+    }
+
+    maven {
+        url "https://dl.bintray.com/zundrel/wrenchable"
+    }
+
+    maven {
+        url "https://maven.dblsaiko.net/"
+    }
+
+    maven {
+        url "https://dl.bintray.com/earthcomputer/mods"
     }
 
     maven {
         name "Cotton"
         url "https://server.bbkr.space/artifactory/libs-release"
     }
-
-    maven {
-        url "https://raw.githubusercontent.com/Devan-Kerman/Devan-Repo/master"
-    }
 }
 
 dependencies {
-    minecraft "${project.minecraft}"
-    mappings "${project.yarn}"
-    modImplementation "${project.loader}"
+    minecraft "com.mojang:minecraft:${project.minecraftVersion}"
+    mappings "net.fabricmc:yarn:${project.minecraftVersion}+build.${project.yarn}:v2"
+    modImplementation "net.fabricmc:fabric-loader:+"
 
-    compileOnly "${project.jetbrainsAnnotations}"
     compileOnly "${project.jsr}"
+
+    testImplementation "${project.junit}"
 
 //    modImplementation "com.jamieswhiteshirt:developer-mode:1.0.15"
 }

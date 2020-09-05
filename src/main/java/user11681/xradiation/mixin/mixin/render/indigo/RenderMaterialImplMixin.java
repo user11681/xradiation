@@ -11,7 +11,7 @@ import user11681.xradiation.Configuration;
 
 @Environment(EnvType.CLIENT)
 @Mixin(RenderMaterialImpl.class)
-public abstract class RenderMaterialImplMixin {
+abstract class RenderMaterialImplMixin {
     @Inject(method = "disableAo", at = @At("HEAD"), cancellable = true, remap = false)
     private void flatten(final int textureIndex, final CallbackInfoReturnable<Boolean> info) {
         if (Configuration.INSTANCE.enabled) {

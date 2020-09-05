@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import user11681.xradiation.registry.FluidData;
 
 @Mixin(Registry.class)
-public abstract class RegistryMixin {
+abstract class RegistryMixin {
     @Inject(method = "register(Lnet/minecraft/util/registry/Registry;Lnet/minecraft/util/Identifier;Ljava/lang/Object;)Ljava/lang/Object;", at = @At("RETURN"))
     private static <V, T extends V> void registerBuckets(final Registry<V> registry, final Identifier id, final T entry, final CallbackInfoReturnable<T> cir) {
         if (entry instanceof Fluid) {
