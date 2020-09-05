@@ -2,8 +2,6 @@ package user11681.xradiation;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import java.util.List;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -11,7 +9,6 @@ import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-@Environment(EnvType.CLIENT)
 public class XRadiationItems {
     public static final List<Item> ITEMS = new ObjectArrayList<>();
 

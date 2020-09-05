@@ -1,7 +1,5 @@
 package user11681.xradiation.mixin.mixin.render.indigo;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.impl.client.indigo.renderer.mesh.MutableQuadViewImpl;
 import net.fabricmc.fabric.impl.client.indigo.renderer.render.AbstractQuadRenderer;
 import net.minecraft.block.BlockState;
@@ -14,7 +12,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import user11681.xradiation.Configuration;
 
-@Environment(EnvType.CLIENT)
 @Mixin(AbstractQuadRenderer.class)
 abstract class AbstractQuadRendererMixin {
     @Shadow(remap = false)

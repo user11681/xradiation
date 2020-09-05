@@ -1,8 +1,7 @@
 package user11681.xradiation.mixin.mixin.registry;
 
-import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
-import java.util.Map;
-import java.util.Set;
+import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ReferenceLinkedOpenHashSet;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -10,7 +9,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import user11681.xradiation.registry.FluidData;
+import user11681.xradiation.registry.RegistryData;
 
 @Mixin(Registry.class)
 abstract class RegistryMixin {
@@ -18,8 +17,8 @@ abstract class RegistryMixin {
     private static <V, T extends V> void registerBuckets(final Registry<V> registry, final Identifier id, final T entry, final CallbackInfoReturnable<T> cir) {
         if (entry instanceof Fluid) {
             final Fluid fluid = (Fluid) entry;
-            final Set<Fluid> newFluids = new ObjectLinkedOpenHashSet<>();
-            final Map<Fluid, Set<Fluid>> fluids = FluidData.FLUIDS;
+            final ReferenceLinkedOpenHashSet<Fluid> newFluids = new ReferenceLinkedOpenHashSet<>();
+            final Reference2ReferenceOpenHashMap<Fluid, ReferenceLinkedOpenHashSet<Fluid>> fluids = RegistryData.FLUIDS;
 
             newFluids.add(fluid);
 
@@ -30,7 +29,7 @@ abstract class RegistryMixin {
                 }
             }
 
-            FluidData.FLUIDS.put(fluid, newFluids);
+            RegistryData.FLUIDS.put(fluid, newFluids);
         }
     }
 }

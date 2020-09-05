@@ -13,7 +13,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import user11681.xradiation.Configuration;
 
-@Environment(EnvType.CLIENT)
 @Mixin(TerrainRenderContext.class)
 abstract class TerrainRenderContextMixin {
     @Inject(method = "tesselateBlock", at = @At("HEAD"), cancellable = true, remap = false)

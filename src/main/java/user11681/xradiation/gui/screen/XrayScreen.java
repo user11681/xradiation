@@ -54,7 +54,6 @@ import user11681.xradiation.gui.widget.CrossButton;
 import user11681.xradiation.gui.widget.SquareTexturedButton;
 import user11681.xradiation.gui.widget.TickButton;
 
-@Environment(EnvType.CLIENT)
 public class XrayScreen extends AbstractInventoryScreen<XrayScreen.XrayScreenHandler> {
     public static final Identifier TEXTURE = new Identifier("textures/gui/container/creative_inventory/tabs.png");
     private static final SimpleInventory inventory = new SimpleInventory(45);
@@ -651,7 +650,6 @@ public class XrayScreen extends AbstractInventoryScreen<XrayScreen.XrayScreenHan
         }
     }
 
-    @Environment(EnvType.CLIENT)
     public static class XrayScreenHandler extends ScreenHandler {
         public final DefaultedList<ItemStack> itemList = DefaultedList.of();
 

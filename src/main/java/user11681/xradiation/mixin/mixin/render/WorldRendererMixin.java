@@ -1,8 +1,6 @@
 package user11681.xradiation.mixin.mixin.render;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.BufferBuilderStorage;
@@ -21,7 +19,6 @@ import org.spongepowered.asm.mixin.Unique;
 import user11681.xradiation.mixin.duck.WorldRendererDuck;
 
 
-@Environment(EnvType.CLIENT)
 @Mixin(WorldRenderer.class)
 abstract class WorldRendererMixin implements WorldRendererDuck {
     @Shadow

@@ -5,10 +5,10 @@ minecraft {
 }
 
 dependencies {
-    /*modApi*/ include("${project.apiBase}")
-    /*modApi*/ include("${project.apiKeyBindings}")
-    /*modApi*/ include("${project.apiRendererApi}")
-    /*modApi*/ include("${project.apiRendererIndigo}")
-    /*modApi*/ include("${project.apiResourceLoader}")
-    modApi "${project.astromine}"
+//    modApi include("${project.apiBase}")
+//    modApi include("${project.apiKeyBindings}")
+//    modApi include("${project.apiRendererApi}")
+//    modApi include("${project.apiRendererIndigo}")
+//    modApi include("${project.apiResourceLoader}")
+    modApi "${project.api}"
 }

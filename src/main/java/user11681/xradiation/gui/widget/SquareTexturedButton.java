@@ -1,8 +1,6 @@
 package user11681.xradiation.gui.widget;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.texture.TextureManager;
@@ -10,7 +8,6 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
 
-@Environment(EnvType.CLIENT)
 public class SquareTexturedButton extends ButtonWidget {
     private static final TextureManager TEXTURE_MANAGER = MinecraftClient.getInstance().getTextureManager();
 

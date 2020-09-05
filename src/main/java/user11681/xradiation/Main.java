@@ -1,8 +1,6 @@
 package user11681.xradiation;
 
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.options.KeyBinding;
@@ -13,7 +11,6 @@ import org.apache.logging.log4j.Logger;
 import user11681.xradiation.keybinding.XrayScreenKey;
 import user11681.xradiation.keybinding.XrayToggleKey;
 
-@Environment(EnvType.CLIENT)
 public class Main implements ClientModInitializer {
     public static final String MOD_ID = "xradiation";
 

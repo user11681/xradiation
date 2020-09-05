@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import user11681.xradiation.registry.BlockItemData;
+import user11681.xradiation.registry.RegistryData;
 
 @Mixin(BlockItem.class)
 abstract class BlockItemMixin {
@@ -19,10 +19,10 @@ abstract class BlockItemMixin {
 
     @Inject(method = "appendBlocks", at = @At("HEAD"))
     private void mapItemToBlocks(final Map<Block, Item> map, final Item item, final CallbackInfo info) {
-        ReferenceOpenHashSet<Block> mappedBlocks = BlockItemData.ITEM_BLOCKS.get(item);
+        ReferenceOpenHashSet<Block> mappedBlocks = RegistryData.ITEM_BLOCKS.get(item);
 
         if (mappedBlocks == null) {
-            BlockItemData.ITEM_BLOCKS.put(item, mappedBlocks = new ReferenceOpenHashSet<>());
+            RegistryData.ITEM_BLOCKS.put(item, mappedBlocks = new ReferenceOpenHashSet<>());
         }
 
         mappedBlocks.add(this.getBlock());

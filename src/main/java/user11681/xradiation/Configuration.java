@@ -26,8 +26,6 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -45,10 +43,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import user11681.xradiation.mixin.duck.BucketFluidAccessor;
-import user11681.xradiation.registry.BlockItemData;
-import user11681.xradiation.registry.FluidData;
+import user11681.xradiation.registry.RegistryData;
 
-@Environment(EnvType.CLIENT)
 public class Configuration {
     public static final Configuration INSTANCE = new Configuration(String.format("%s.json", Main.MOD_ID));
 
@@ -96,8 +92,8 @@ public class Configuration {
             Blocks.ANCIENT_DEBRIS
         ));
         this.defaultFluids = new ObjectLinkedOpenHashSet<>(5);
-        this.defaultFluids.addAll(FluidData.FLUIDS.get(Fluids.WATER));
-        this.defaultFluids.addAll(FluidData.FLUIDS.get(Fluids.LAVA));
+        this.defaultFluids.addAll(RegistryData.FLUIDS.get(Fluids.WATER));
+        this.defaultFluids.addAll(RegistryData.FLUIDS.get(Fluids.LAVA));
     }
 
     public static boolean isAcceptable(final ItemStack itemStack) {
@@ -331,7 +327,7 @@ public class Configuration {
     public void toggleItems(final Item... items) {
         for (final Item item : items) {
             if (item instanceof BlockItem) {
-                this.toggleBlocks(BlockItemData.ITEM_BLOCKS.get(item));
+                this.toggleBlocks(RegistryData.ITEM_BLOCKS.get(item));
             } else if (item instanceof BucketItem) {
                 this.toggleFluids(((BucketFluidAccessor) item).getFluid());
             }
@@ -380,7 +376,7 @@ public class Configuration {
 
     public void addFluids(final Fluid... fluids) {
         for (final Fluid fluid : fluids) {
-            this.addFluids.addAll(FluidData.FLUIDS.get(fluid));
+            this.addFluids.addAll(RegistryData.FLUIDS.get(fluid));
         }
     }
 
@@ -390,7 +386,7 @@ public class Configuration {
 
     public void removeFluids(final Fluid... fluids) {
         for (final Fluid fluid : fluids) {
-            this.removeFluids.addAll(FluidData.FLUIDS.get(fluid));
+            this.removeFluids.addAll(RegistryData.FLUIDS.get(fluid));
         }
     }
 
