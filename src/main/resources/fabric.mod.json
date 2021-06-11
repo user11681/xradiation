@@ -1,0 +1,24 @@
+{
+    "schemaVersion": 1,
+    "id": "xradiation",
+    "version": "${version}",
+    "name": "X-radiation",
+    "authors": [
+        "user11681"
+    ],
+    "contact": {
+        "sources": "https://github.com/user11681/x-radiation"
+    },
+    "license": "GNU GPL v3.0",
+    "icon": "assets/xradiation/icon.png",
+    "environment": "client",
+    "entrypoints": {
+        "client": [
+            "user11681.xradiation.XRadiation"
+        ]
+    },
+    "mixins": [
+        "xradiation.mixins.json"
+    ],
+    "accessWidener": "xradiation.accesswidener"
+}

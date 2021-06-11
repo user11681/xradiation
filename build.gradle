@@ -1,0 +1,18 @@
+plugins {
+    id("wheel-fabric").version("latest.integration")
+}
+
+group = "user11681"
+version = "0.0.2"
+
+minecraft {
+    accessWidener("src/main/resources/xradiation.accesswidener")
+}
+
+dependencies {
+    modInclude("api-base")
+    modInclude("api-key-bindings")
+    modInclude("api-renderer-api")
+    modInclude("api-renderer-indigo")
+    modInclude("api-resource-loader")
+}
